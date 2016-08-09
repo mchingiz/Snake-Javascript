@@ -1,0 +1,25 @@
+$mainWidth:600px;
+$tablex:6;
+
+#main{
+	width:$mainWidth;
+	height:$mainWidth;
+	box-sizing: content-box;
+	border:1px solid darkgray;
+	margin:0 auto;
+	.cell{
+		width:$mainWidth/$tablex;
+		height:$mainWidth/$tablex;
+		border:1px solid darkgray;
+		box-sizing: border-box;
+		float:left;
+		img{
+			width:((($mainWidth/$tablex)-2px)/4)*3;
+			margin: (($mainWidth/$tablex)-2px)/8;
+		}
+	}
+	.snake{
+		background-color: darkslategray;
+		border-color: darkslategray;
+	}
+}

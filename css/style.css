@@ -1,0 +1,20 @@
+#main {
+  width: 600px;
+  height: 600px;
+  box-sizing: content-box;
+  border: 1px solid darkgray;
+  margin: 0 auto; }
+  #main .cell {
+    width: 100px;
+    height: 100px;
+    border: 1px solid darkgray;
+    box-sizing: border-box;
+    float: left; }
+    #main .cell img {
+      width: 73.5px;
+      margin: 12.25px; }
+  #main .snake {
+    background-color: darkslategray;
+    border-color: darkslategray; }
+
+/*# sourceMappingURL=style.css.map */
