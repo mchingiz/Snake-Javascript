@@ -41,10 +41,12 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		var row=6;
+		var row=10;
 		var col=row;
 		var aRow;var aCol; //Location of apple
 		var sRow=2; var sCol=2; //Location of snake's head
+		var gameSpeed=200; //Speed of the game
+		var dir;//Direction
 		
 //Creating table
 		for(i=0;i<row;i++){
@@ -75,29 +77,52 @@
 		newGame();
 		
 //Navigation keys
-		$(document).keydown(function(e){
-			$("#i"+sRow+"j"+sCol).removeClass("snake");
-			//Left
-			if(e.keyCode == 37){
-				sCol-=1;
-				if(sCol == -1){sCol=5}
+			dir="down";
+			
+			//Function to check direction
+			function checkDir(){
+				$(document).keydown(function(e){
+					if(e.keyCode == 37 && dir!="right"){dir="left"};
+					if(e.keyCode == 38 && dir!="down"){dir="up"};
+					if(e.keyCode == 39 && dir!="left"){dir="right"};
+					if(e.keyCode == 40 && dir!="up"){dir="down"};
+				});
 			}
-			//Up
-			else if(e.keyCode == 38){
-				sRow-=1;
-				if(sRow == -1){sRow=5}
+			//Function to move
+			function move(){
+				
+					$("#i"+sRow+"j"+sCol).removeClass("snake");
+				//Left
+				if(dir=="left"){
+						sCol-=1;
+						if(sCol == -1){sCol=row-1};
+				}
+				//Up
+				else if(dir=="up"){
+						sRow-=1;
+						if(sRow == -1){sRow=row-1};
+				}
+				//Right
+				else if(dir=="right"){
+						sCol+=1;
+						if(sCol == row){sCol=0};
+				}
+				//Down
+				else if(dir=="down"){
+						sRow+=1;
+						if(sRow == row){sRow=0};
+				}
+				
+					$("#i"+sRow+"j"+sCol).addClass("snake");
 			}
-			//Right
-			else if(e.keyCode == 39){
-				sCol+=1;
-				if(sCol == 6){sCol=0}
-			}
-			//Down
-			else if(e.keyCode == 40){
-				sRow+=1;
-				if(sRow == 6){sRow=0}
-			}
-			$("#i"+sRow+"j"+sCol).addClass("snake");
-		});
+			//Function to check the direction constantly
+			setInterval(function(){
+				checkDir();
+			},50) 
+			//Function to move constantly
+			setInterval(function(){
+				move();
+			},gameSpeed) 
+		
 	})
 </script>
