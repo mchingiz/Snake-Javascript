@@ -29,6 +29,10 @@
        	</div>
        	
        	<button id="appleLocator">New Apple</button>
+       	
+       	<div id="scores">
+       		
+       	</div>
         
         <!--[if lt IE 8]><p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
 		<script src="js/jquery-migrate-3.0.0.min.js"></script>
@@ -44,9 +48,11 @@
 		var row=10;
 		var col=row;
 		var aRow;var aCol; //Location of apple
-		var sRow=2; var sCol=2; //Location of snake's head
+		var sRow; var sCol; //Location of snake's head
 		var gameSpeed=200; //Speed of the game
 		var dir;//Direction
+		var score;
+		var snake=["i2j2"];
 		
 //Creating table
 		for(i=0;i<row;i++){
@@ -56,25 +62,25 @@
 		}
 //Finding apple a new location
 		function newApple(){
-			aRow=Math.floor(Math.random()*(row-0))+0;
-			console.log(aRow);
-			aCol=Math.floor(Math.random()*(row-0))+0;
-			console.log(aCol);
+			$("#i"+aRow+"j"+aCol).empty();
 			
-			$("#i"+aRow+"j"+aCol).html("<img src='img/apple.png'>")
+			aRow=Math.floor(Math.random()*(row-0))+0;
+			aCol=Math.floor(Math.random()*(row-0))+0;
+			console.log("Apple's location: "+aRow+" "+aCol);
+			
+			$("#i"+aRow+"j"+aCol).html("<img src='img/apple.png'>");
 		}
-		
-//Button testing
-		$("#appleLocator").on('click',function(){
-			newApple();
-		})
-		
 //New Game
 		function newGame(){
+			sRow=parseInt(snake[0].charAt(1),10);
+			sCol=parseInt(snake[0].charAt(3),10);
 			$("#i"+sRow+"j"+sCol).addClass("snake");
+			score=0;
 		}
 		
 		newGame();
+		newApple();
+		
 		
 //Navigation keys
 			dir="down";
@@ -88,41 +94,58 @@
 					if(e.keyCode == 40 && dir!="up"){dir="down"};
 				});
 			}
+			//Fucntion to check if apple has beet eaten
+			
+			//TEST
+		
 			//Function to move
 			function move(){
 				
-					$("#i"+sRow+"j"+sCol).removeClass("snake");
+				$("#i"+sRow+"j"+sCol).removeClass("snake");
+				
 				//Left
 				if(dir=="left"){
 						sCol-=1;
-						if(sCol == -1){sCol=row-1};
+						/*if(sCol == -1){sCol=row-1};*/ //To keep the snake in table
+						if(sCol == -1){gameOver()}; //To keep the snake in table
 				}
 				//Up
 				else if(dir=="up"){
 						sRow-=1;
-						if(sRow == -1){sRow=row-1};
+						/*if(sRow == -1){sRow=row-1};*/ //To keep the snake in table
+						if(sRow == -1){gameOver()}; //To keep the snake in table
 				}
 				//Right
 				else if(dir=="right"){
 						sCol+=1;
-						if(sCol == row){sCol=0};
+						/*if(sCol == row){sCol=0};*/ //To keep the snake in table
+						if(sCol == row){gameOver()}; //To keep the snake in table
 				}
 				//Down
 				else if(dir=="down"){
 						sRow+=1;
-						if(sRow == row){sRow=0};
+						/*if(sRow == row){sRow=0};*/ //To keep the snake in table
+						if(sRow == row){gameOver()}; //To keep the snake in table
 				}
 				
-					$("#i"+sRow+"j"+sCol).addClass("snake");
+				$("#i"+sRow+"j"+sCol).addClass("snake");
+				
+				if(sRow==aRow && sCol==aCol){ //if apple has been 'eaten'
+					console.log("eaten");
+					score++;
+					newApple();
+				}
+				
 			}
 			//Function to check the direction constantly
-			setInterval(function(){
-				checkDir();
-			},50) 
+			setInterval(checkDir,2)
 			//Function to move constantly
-			setInterval(function(){
-				move();
-			},gameSpeed) 
-		
+			var move=setInterval(move,gameSpeed)
+			
+			//Game Over function
+			function gameOver(){
+				clearInterval(move);
+				$("#scores").append("<p>Your score: <span>"+score+"</span></p>");
+			}
 	})
 </script>
